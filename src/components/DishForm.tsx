@@ -117,10 +117,14 @@ export const DishForm: React.FC<DishFormProps> = ({
 
   const updateIngredientQuantity = (index: number, newQuantity: number) => {
     const newIngredients = [...(formData.ingredients || [])];
-    newIngredients[index] = {
-      ...newIngredients[index],
-      quantity: newQuantity
-    };
+    const currentIngredient = newIngredients[index];
+    if (currentIngredient) {
+      newIngredients[index] = {
+        ...currentIngredient,
+        quantity: newQuantity,
+        ingredient: currentIngredient.ingredient // Убеждаемся, что объект ingredient сохраняется
+      };
+    }
     setFormData({ ...formData, ingredients: newIngredients });
   };
 
