@@ -56,9 +56,17 @@ export const TechnicalCard: React.FC<TechnicalCardProps> = ({ dish }) => {
         <Typography variant="body1" color="text.secondary" gutterBottom>
           {dish.description}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Категория: {dish.category}
-        </Typography>
+        <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
+          <Typography variant="body2" color="text.secondary">
+            Категория: {dish.category}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Выход: {dish.yield} {dish.yieldUnit}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Время приготовления: {dish.cookingTime} мин
+          </Typography>
+        </Box>
       </Box>
 
       <Divider sx={{ my: 2 }} />
@@ -81,7 +89,6 @@ export const TechnicalCard: React.FC<TechnicalCardProps> = ({ dish }) => {
            </Typography>
            <Typography>Общая стоимость: {costInfo.totalCost} zł</Typography>
            <Typography>Стоимость за {dish.yieldUnit}: {costInfo.costPerServing} zł</Typography>
-           <Typography>Время приготовления: {dish.cookingTime} мин</Typography>
          </Box>
       </Box>
 
