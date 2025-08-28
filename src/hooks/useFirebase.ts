@@ -9,15 +9,27 @@ export const useFirebase = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log('Firebase hook initialized');
+    
     // Подписка на изменения ингредиентов
     const unsubscribeIngredients = ingredientsService.subscribe((data) => {
+      console.log('Ingredients loaded:', data);
       setIngredients(data);
+      setLoading(false);
+    }, (error) => {
+      console.error('Ingredients subscription error:', error);
+      setError('Ошибка загрузки ингредиентов');
       setLoading(false);
     });
 
     // Подписка на изменения блюд
     const unsubscribeDishes = dishesService.subscribe((data) => {
+      console.log('Dishes loaded:', data);
       setDishes(data);
+      setLoading(false);
+    }, (error) => {
+      console.error('Dishes subscription error:', error);
+      setError('Ошибка загрузки блюд');
       setLoading(false);
     });
 

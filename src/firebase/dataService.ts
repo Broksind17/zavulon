@@ -75,7 +75,7 @@ export const ingredientsService = {
   },
 
   // Подписка на изменения
-  subscribe(callback: (ingredients: Ingredient[]) => void) {
+  subscribe(callback: (ingredients: Ingredient[]) => void, errorCallback?: (error: any) => void) {
     const q = query(collection(db, INGREDIENTS_COLLECTION), orderBy('name'));
     return onSnapshot(q, (querySnapshot) => {
       const ingredients = querySnapshot.docs.map(doc => ({
@@ -83,6 +83,9 @@ export const ingredientsService = {
         ...convertDates(doc.data())
       })) as Ingredient[];
       callback(ingredients);
+    }, (error) => {
+      console.error('Ingredients subscription error:', error);
+      if (errorCallback) errorCallback(error);
     });
   }
 };
@@ -124,7 +127,7 @@ export const dishesService = {
   },
 
   // Подписка на изменения
-  subscribe(callback: (dishes: Dish[]) => void) {
+  subscribe(callback: (dishes: Dish[]) => void, errorCallback?: (error: any) => void) {
     const q = query(collection(db, DISHES_COLLECTION), orderBy('name'));
     return onSnapshot(q, (querySnapshot) => {
       const dishes = querySnapshot.docs.map(doc => ({
@@ -132,6 +135,9 @@ export const dishesService = {
         ...convertDates(doc.data())
       })) as Dish[];
       callback(dishes);
+    }, (error) => {
+      console.error('Dishes subscription error:', error);
+      if (errorCallback) errorCallback(error);
     });
   }
 };
