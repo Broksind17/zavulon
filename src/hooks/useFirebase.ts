@@ -16,20 +16,12 @@ export const useFirebase = () => {
       console.log('Ingredients loaded:', data);
       setIngredients(data);
       setLoading(false);
-    }, (error) => {
-      console.error('Ingredients subscription error:', error);
-      setError('Ошибка загрузки ингредиентов');
-      setLoading(false);
     });
 
     // Подписка на изменения блюд
     const unsubscribeDishes = dishesService.subscribe((data) => {
       console.log('Dishes loaded:', data);
       setDishes(data);
-      setLoading(false);
-    }, (error) => {
-      console.error('Dishes subscription error:', error);
-      setError('Ошибка загрузки блюд');
       setLoading(false);
     });
 
