@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.js": "/zavulon/static/js/main.4158a473.js",
+    "main.js": "/zavulon/static/js/main.7ffc16f4.js",
     "static/js/977.bd3f71ff.chunk.js": "/zavulon/static/js/977.bd3f71ff.chunk.js",
     "static/js/455.19dbbccb.chunk.js": "/zavulon/static/js/455.19dbbccb.chunk.js",
     "static/js/453.b195ea78.chunk.js": "/zavulon/static/js/453.b195ea78.chunk.js",
     "index.html": "/zavulon/index.html",
-    "main.4158a473.js.map": "/zavulon/static/js/main.4158a473.js.map",
+    "main.7ffc16f4.js.map": "/zavulon/static/js/main.7ffc16f4.js.map",
     "977.bd3f71ff.chunk.js.map": "/zavulon/static/js/977.bd3f71ff.chunk.js.map",
     "455.19dbbccb.chunk.js.map": "/zavulon/static/js/455.19dbbccb.chunk.js.map",
     "453.b195ea78.chunk.js.map": "/zavulon/static/js/453.b195ea78.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.4158a473.js"
+    "static/js/main.7ffc16f4.js"
   ]
 }
