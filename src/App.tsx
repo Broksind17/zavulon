@@ -25,7 +25,7 @@ import { IngredientForm } from './components/IngredientForm';
 import { DishForm } from './components/DishForm';
 import { TechnicalCard } from './components/TechnicalCard';
 import { SearchBar } from './components/SearchBar';
-import { useLocalStorage } from './hooks/useLocalStorage';
+import { useFirebase } from './hooks/useFirebase';
 import { filterIngredients, filterDishes, sortDishes } from './utils/filtering';
 
 import { Ingredient, Dish } from './types';
@@ -52,8 +52,18 @@ function TabPanel(props: TabPanelProps) {
 }
 
 function App() {
-  const [ingredients, setIngredients] = useLocalStorage<Ingredient[]>('ingredients', []);
-  const [dishes, setDishes] = useLocalStorage<Dish[]>('dishes', []);
+  const {
+    ingredients,
+    dishes,
+    loading,
+    error,
+    addIngredient,
+    updateIngredient,
+    deleteIngredient,
+    addDish,
+    updateDish,
+    deleteDish
+  } = useFirebase();
   const [tabValue, setTabValue] = useState(0);
   const [ingredientFormOpen, setIngredientFormOpen] = useState(false);
   const [dishFormOpen, setDishFormOpen] = useState(false);
@@ -69,40 +79,30 @@ function App() {
   const [dishSortBy, setDishSortBy] = useState<'name' | 'category' | 'cost' | 'date'>('name');
   const [dishSortOrder, setDishSortOrder] = useState<'asc' | 'desc'>('asc');
 
-    const handleIngredientSave = (ingredient: Ingredient) => {
+    const handleIngredientSave = async (ingredient: Ingredient) => {
     if (selectedIngredient) {
-      setIngredients(prev => prev.map(i => i.id === ingredient.id ? ingredient : i));
-      // Обновляем ингредиенты в блюдах при изменении цены
-      setDishes(prev => prev.map(dish => ({
-        ...dish,
-        ingredients: dish.ingredients.map(recipeIngredient =>
-          recipeIngredient.ingredientId === ingredient.id
-            ? { ...recipeIngredient, ingredient }
-            : recipeIngredient
-        )
-      })));
-
+      await updateIngredient(ingredient.id, ingredient);
     } else {
-      setIngredients(prev => [...prev, ingredient]);
+      await addIngredient(ingredient);
     }
     setSelectedIngredient(undefined);
   };
 
-  const handleDishSave = (dish: Dish) => {
+  const handleDishSave = async (dish: Dish) => {
     if (selectedDish) {
-      setDishes(prev => prev.map(d => d.id === dish.id ? dish : d));
+      await updateDish(dish.id, dish);
     } else {
-      setDishes(prev => [...prev, dish]);
+      await addDish(dish);
     }
     setSelectedDish(undefined);
   };
 
-  const handleIngredientDelete = (id: string) => {
-    setIngredients(prev => prev.filter(i => i.id !== id));
+  const handleIngredientDelete = async (id: string) => {
+    await deleteIngredient(id);
   };
 
-  const handleDishDelete = (id: string) => {
-    setDishes(prev => prev.filter(d => d.id !== id));
+  const handleDishDelete = async (id: string) => {
+    await deleteDish(id);
   };
 
   const handleExportPDF = async (dish: Dish) => {
@@ -117,6 +117,26 @@ function App() {
   const filteredIngredients = filterIngredients(ingredients, ingredientSearchTerm);
   const filteredDishes = filterDishes(dishes, dishSearchTerm, dishCategoryFilter);
   const sortedDishes = sortDishes(filteredDishes, dishSortBy, dishSortOrder);
+
+  if (loading) {
+    return (
+      <Container maxWidth="lg" sx={{ py: 4, textAlign: 'center' }}>
+        <Typography variant="h4" gutterBottom>
+          Загрузка данных...
+        </Typography>
+      </Container>
+    );
+  }
+
+  if (error) {
+    return (
+      <Container maxWidth="lg" sx={{ py: 4, textAlign: 'center' }}>
+        <Typography variant="h4" color="error" gutterBottom>
+          Ошибка: {error}
+        </Typography>
+      </Container>
+    );
+  }
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
