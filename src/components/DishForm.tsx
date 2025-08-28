@@ -47,7 +47,7 @@ export const DishForm: React.FC<DishFormProps> = ({
     ingredients: [],
     cookingTime: 0,
     yield: 1,
-    yieldUnit: 'порция',
+    yieldUnit: 'кг',
     instructions: '',
     markup: 0
   });
@@ -66,7 +66,7 @@ export const DishForm: React.FC<DishFormProps> = ({
           ingredients: [],
           cookingTime: 0,
           yield: 1,
-          yieldUnit: 'порция',
+          yieldUnit: 'кг',
           instructions: '',
           markup: 0
         });
@@ -83,7 +83,7 @@ export const DishForm: React.FC<DishFormProps> = ({
         ingredients: formData.ingredients || [],
         cookingTime: formData.cookingTime || 0,
         yield: formData.yield || 1,
-        yieldUnit: formData.yieldUnit || 'порция',
+        yieldUnit: formData.yieldUnit || 'кг',
         instructions: formData.instructions || '',
         markup: formData.markup || 0,
         createdAt: dish?.createdAt || new Date(),
@@ -239,13 +239,21 @@ export const DishForm: React.FC<DishFormProps> = ({
             onChange={(e) => setFormData({ ...formData, yield: parseFloat(e.target.value) || 1 })}
           />
         </Box>
-        <TextField
-          fullWidth
-          label="Единица выхода"
-          value={formData.yieldUnit}
-          onChange={(e) => setFormData({ ...formData, yieldUnit: e.target.value })}
-          margin="normal"
-        />
+        <FormControl fullWidth margin="normal">
+          <InputLabel>Единица выхода</InputLabel>
+          <Select
+            value={formData.yieldUnit}
+            onChange={(e) => setFormData({ ...formData, yieldUnit: e.target.value })}
+            label="Единица выхода"
+          >
+            <MenuItem value="кг">кг</MenuItem>
+            <MenuItem value="г">г</MenuItem>
+            <MenuItem value="л">л</MenuItem>
+            <MenuItem value="мл">мл</MenuItem>
+            <MenuItem value="порция">порция</MenuItem>
+            <MenuItem value="шт">шт</MenuItem>
+          </Select>
+        </FormControl>
         <TextField
           fullWidth
           label="Технология приготовления"
